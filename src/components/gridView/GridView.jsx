@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
-import useAxios from '../../hooks/useAxios/useAxios'
+import useAxios from '../../hooks/useAxios'
 import styles from './GridView.module.css'
 
 export default function GridView({

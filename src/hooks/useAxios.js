@@ -7,7 +7,7 @@ import {
     isTokenExpired,
     logout,
     saveTokens
-} from './authenticationManager'
+} from '../utils/authenticationManager'
 
 const useAxios = axiosParams => {
     const [response, setResponse] = useState({})
@@ -50,7 +50,7 @@ const useAxios = axiosParams => {
             }
         })
 
-        location = location.origin
+        window.location = window.location.origin
     }
 
     const refreshToken = async () => {
@@ -128,18 +128,18 @@ const useAxios = axiosParams => {
                 } else {
                     const controller = new AbortController()
 
-                    params.config.headers = {
+                    params.axiosConfig.config.headers = {
                         signal: controller.signal
                     }
 
-                    setHeaders(params.config.headers)
+                    setHeaders(params.axiosConfig.config.headers)
 
-                    params.config.withCredentials = true
-                    params.config.timeout = process.env.REACT_APP_API_TIMEOUT
+                    params.axiosConfig.config.withCredentials = true
+                    params.axiosConfig.config.timeout = process.env.REACT_APP_API_TIMEOUT
 
-                    formatGetUrlWithParams(params.config)
+                    formatGetUrlWithParams(params.axiosConfig.config)
 
-                    result = await axios(params.config)
+                    result = await axios(params.axiosConfig.config)
                         .then(response => {
                             if (response.status === 200) {
                                 if (!response.data.Succeeded) {
@@ -150,7 +150,7 @@ const useAxios = axiosParams => {
                                     return {
                                         succedeed: false,
                                         error: {
-                                            title: params.resources.error,
+                                            title: params.axiosConfig.resources.error,
                                             message: body
                                         }
                                     }
@@ -168,14 +168,14 @@ const useAxios = axiosParams => {
                                     return {
                                         succedeed: false,
                                         error: {
-                                            title: params.resources.unauthorised,
-                                            message: params.resources.noHaveAccess
+                                            title: params.axiosConfig.resources.unauthorised,
+                                            message: params.axiosConfig.resources.noHaveAccess
                                         }
                                     }
                                 } else if (err.response.status === 500) {
                                     let result = {
                                         succedeed: false,
-                                        error: { title: params.resources.error}
+                                        error: { title: params.axiosConfig.resources.error}
                                     }
                                     if (err.response.data?.Errors?.length) {
                                         result.error.message =
