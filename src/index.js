@@ -19,4 +19,4 @@
 import * as components from  './components'
 import * as hooks from './hooks'
 
-export * from {components, hooks}
+export {components, hooks}
